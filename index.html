@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 租赁 · 使用说明书</title>
+<style>
+  :root {
+    --bg: #0A0A12;
+    --bg2: #0F0F1A;
+    --card: #15151F;
+    --card2: #1A1A28;
+    --border: #26263A;
+    --border2: #33334D;
+    --green: #00FF88;
+    --green-dim: #00C46A;
+    --purple: #B45CFF;
+    --purple-dim: #9333EA;
+    --orange: #FF7A00;
+    --cyan: #00D4FF;
+    --pink: #FF4D8D;
+    --text: #EDEDF5;
+    --sub: #9A9AB8;
+    --muted: #6E6E88;
+    --gold: #FFC247;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    padding: 70px 0 50px;
+    text-align: center;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,255,136,0.16), transparent 70%),
+                radial-gradient(ellipse 60% 50% at 85% 10%, rgba(180,92,255,0.12), transparent 70%);
+  }
+  .hero .tag {
+    display:inline-block; padding: 5px 14px; border-radius: 20px;
+    background: rgba(0,255,136,0.12); border: 1px solid rgba(0,255,136,0.35);
+    color: var(--green); font-size: 13px; font-weight: 600; letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 44px; font-weight: 800; line-height: 1.2; letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #fff, var(--green) 60%, var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero .sub { margin-top: 16px; color: var(--sub); font-size: 16px; }
+  .hero .keys { margin-top: 26px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .hero .key {
+    padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+    background: var(--card); border: 1px solid var(--border);
+  }
+  .hero .key b { color: var(--green); }
+
+  /* ===== 通用 section ===== */
+  .sec { margin-top: 60px; }
+  .sec-head { display:flex; align-items:center; gap:12px; margin-bottom: 28px; }
+  .sec-num {
+    width: 34px; height: 34px; border-radius: 10px; display:flex; align-items:center; justify-content:center;
+    font-weight: 800; font-size: 16px; flex-shrink: 0;
+  }
+  .sec-head h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; }
+  .sec-head .en { color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: 1px; margin-left: auto; text-transform: uppercase; }
+
+  /* ===== 概念卡片 ===== */
+  .grid { display:grid; gap:18px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 720px) { .g2,.g3 { grid-template-columns: 1fr; } }
+
+  .concept {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px; position: relative; overflow: hidden;
+    transition: transform .15s, border-color .15s;
+  }
+  .concept:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .concept .ic {
+    width: 44px; height: 44px; border-radius: 12px; display:flex; align-items:center; justify-content:center;
+    font-size: 22px; font-weight: 800; margin-bottom: 14px;
+  }
+  .concept h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+  .concept .en-name { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .concept p { color: var(--sub); font-size: 14px; line-height: 1.75; }
+  .concept .vs { margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-size: 13px; background: rgba(255,255,255,0.03); border-left: 2px solid var(--green); color: var(--text); }
+  .concept .vs b { color: var(--green); }
+
+  /* ===== 定价 ===== */
+  .price { border-radius: 18px; padding: 26px 24px; border: 1px solid var(--border); background: var(--card); position: relative; }
+  .price.hot { border: 1px solid var(--green); background: linear-gradient(180deg, rgba(0,255,136,0.06), var(--card) 45%); }
+  .price .badge {
+    position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+    padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    background: var(--green); color: #04150C;
+  }
+  .price .lv { font-size: 15px; font-weight: 700; color: var(--purple); letter-spacing: 1px; }
+  .price .amt { margin: 10px 0 4px; font-size: 40px; font-weight: 800; }
+  .price .amt small { font-size: 16px; font-weight: 600; color: var(--sub); }
+  .price .tagline { color: var(--sub); font-size: 13px; margin-bottom: 16px; }
+  .price ul { list-style:none; }
+  .price li { font-size: 13.5px; color: var(--text); padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .price li:last-child { border-bottom:none; }
+  .price li::before { content:"▸ "; color: var(--green); font-weight: 700; }
+  .price li b { color: var(--green); }
+
+  /* ===== 流程 ===== */
+  .steps { display:grid; gap:16px; }
+  .step {
+    display:flex; gap:18px; align-items:flex-start;
+    background: var(--card); border:1px solid var(--border); border-radius:16px; padding: 22px 24px;
+  }
+  .step .no {
+    width: 48px; height: 48px; border-radius: 14px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size: 22px; font-weight: 800;
+    background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.3);
+  }
+  .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .step h3 span { color: var(--muted); font-size: 13px; font-weight: 600; margin-left: 8px; }
+  .step p { color: var(--sub); font-size: 14px; line-height: 1.7; }
+  .step .chip { display:inline-block; margin-top:8px; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:600; background:rgba(180,92,255,0.12); color:var(--purple); border:1px solid rgba(180,92,255,0.3); }
+
+  /* ===== 销售对比 ===== */
+  .compare { display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+  @media (max-width:720px){ .compare{grid-template-columns:1fr;} }
+  .cmp-card { border-radius: 16px; padding: 24px; border:1px solid var(--border); background: var(--card); }
+  .cmp-card.human { border-color: rgba(255,77,141,0.4); }
+  .cmp-card.agent { border-color: rgba(0,255,136,0.4); }
+  .cmp-card h4 { font-size: 18px; margin-bottom: 14px; display:flex; align-items:center; gap:8px; }
+  .cmp-card .dot { width:10px; height:10px; border-radius:50%; }
+  .cmp-card li { font-size: 14px; color: var(--sub); padding: 6px 0; list-style:none; }
+  .cmp-card li::before { content:"✗ "; color: var(--pink); font-weight:700; }
+  .cmp-card.agent li::before { content:"✓ "; color: var(--green); font-weight:700; }
+
+  .callout {
+    margin-top: 24px; border-radius: 16px; padding: 22px 26px;
+    background: linear-gradient(120deg, rgba(0,255,136,0.08), rgba(180,92,255,0.08));
+    border: 1px solid var(--border2);
+  }
+  .callout h3 { font-size: 18px; margin-bottom: 10px; color: var(--green); }
+  .callout p { color: var(--sub); font-size: 14px; line-height: 1.8; }
+  .callout b { color: var(--text); }
+
+  .footer { margin-top: 60px; text-align:center; color: var(--muted); font-size: 13px; padding-top: 30px; border-top: 1px solid var(--border); }
+
+  .tbl { width:100%; border-collapse:collapse; margin-top: 10px; }
+  .tbl th, .tbl td { padding: 12px 14px; text-align:left; border-bottom:1px solid var(--border); font-size: 13.5px; }
+  .tbl th { color: var(--green); font-weight:700; font-size: 12px; letter-spacing:0.5px; text-transform:uppercase; }
+  .tbl td { color: var(--text); }
+  .tbl td.sub { color: var(--sub); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <div class="tag">内部销售手册 · 面向销售与客户</div>
+    <h1>AI Agent 租赁使用说明书</h1>
+    <div class="sub">让每一位销售都能讲清楚 —— 我们租的不是「聊天机器人」，是一个被调教好边界的<b style="color:var(--green)">专属数字员工</b></div>
+    <div class="keys">
+      <span class="key">🛠 <b>Harness 工程</b> · 安全可控</span>
+      <span class="key">🧠 <b>旗舰模型</b> · 永不降配</span>
+      <span class="key">👁 <b>视觉能力</b> · 看懂截图</span>
+      <span class="key">🔒 <b>数据隔离</b> · 加密专属</span>
+    </div>
+  </div>
+
+  <!-- ============ 第一部分：基础概念 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num" style="background:rgba(0,255,136,0.15); color:var(--green);">1</div>
+      <h2>基础概念 · 先讲清这几个词</h2>
+      <div class="en">Concepts</div>
+    </div>
+    <div class="grid g2">
+
+      <div class="concept">
+        <div class="ic" style="background:rgba(0,255,136,0.12); color:var(--green);">A</div>
+        <h3>AI Agent（智能体）</h3>
+        <div class="en-name">AI AGENT</div>
+        <p>不是「你问它答」的聊天机器人，而是能<b style="color:var(--text)">自主使用工具、执行任务、有记忆</b>的数字员工。你交代一件事，它自己查数据、做表格、盯进度、发提醒。</p>
+        <div class="vs"><b>Chatbot 只会回答</b>，<b>Agent 会干活</b> —— 这是本质区别。</div>
+      </div>
+
+      <div class="concept">
+        <div class="ic" style="background:rgba(180,92,255,0.15); color:var(--purple);">H</div>
+        <h3>Harness Engineering</h3>
+        <div class="en-name">约束 / 缰绳工程</div>
+        <p>「Harness」本意是马具、缰绳。给 AI 套上缰绳的工程 —— <b style="color:var(--text)">决定它能碰什么数据、能用什么工具、什么该干、什么不能碰</b>。</p>
+        <div class="vs">就像新员工入职要定<b>岗位说明书 + 权限卡</b>。我们交付给你的 Agent，是<b>被调教好边界</b>的，不是裸奔的 AI。</div>
+      </div>
+
+      <div class="concept">
+        <div class="ic" style="background:rgba(0,212,255,0.12); color:var(--cyan);">T</div>
+        <h3>Token（令牌）</h3>
+        <div class="en-name">TOKEN · 计费单位</div>
+        <p>AI 理解和计费的最小单位，文本会被切成 token。1 个汉字 ≈ 1–2 个 token。</p>
+        <div class="vs">把它想成 AI 的「<b>文字汽油</b>」—— 用多少 token，就是多少成本。我们按订阅打包，<b>你不用管油钱</b>。</div>
+      </div>
+
+      <div class="concept">
+        <div class="ic" style="background:rgba(255,122,0,0.14); color:var(--orange);">M</div>
+        <h3>记忆 Memory</h3>
+        <div class="en-name">MEMORY</div>
+        <p>Agent 记得你的偏好、历史、每一次纠正。你纠正它一次，它记一辈子。</p>
+        <div class="vs">越用越懂你 —— 这是它跟「一次性问答」最大的不同，<b>用得越久越值钱</b>。</div>
+      </div>
+
+      <div class="concept">
+        <div class="ic" style="background:rgba(255,194,71,0.14); color:var(--gold);">🧠</div>
+        <h3>模型 Model</h3>
+        <div class="en-name">MODEL · 大脑</div>
+        <p>Agent 的「大脑」。我们对所有客户<b style="color:var(--text)">统一使用旗舰模型，永不降配</b>，并标配视觉能力（能看懂你发的截图、照片、表格）。</p>
+        <div class="vs">不会因为价格低就给你「缩水版大脑」。</div>
+      </div>
+
+      <div class="concept">
+        <div class="ic" style="background:rgba(255,77,141,0.14); color:var(--pink);">🔒</div>
+        <h3>沙箱 Sandbox</h3>
+        <div class="en-name">SANDBOX · 隔离环境</div>
+        <p>Agent 运行的<b style="color:var(--text)">加密隔离环境</b>。你的数据单独存放，Agent 碰不到你电脑里的其他文件，也不会暴露到公网。</p>
+        <div class="vs">每个客户一个独立分区，<b>互相看不见，谁也摸不到对方</b>。</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ 第二部分：定价 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num" style="background:rgba(255,122,0,0.15); color:var(--orange);">2</div>
+      <h2>三档定价 · 按需选</h2>
+      <div class="en">Pricing</div>
+    </div>
+    <div class="grid g3">
+
+      <div class="price">
+        <div class="lv">基础版</div>
+        <div class="amt">¥300 <small>/月</small></div>
+        <div class="tagline">先跑起来 · 验证价值</div>
+        <ul>
+          <li>每日 <b>1 次</b>定时推送</li>
+          <li>偶发问答</li>
+          <li><b>1 个</b>核心业务模块</li>
+          <li>轻资源配额（1GB）</li>
+          <li>旗舰模型 + 视觉能力</li>
+        </ul>
+      </div>
+
+      <div class="price hot">
+        <div class="badge">★ 主力推荐</div>
+        <div class="lv">标准版</div>
+        <div class="amt">¥1,000 <small>/月</small></div>
+        <div class="tagline">主力客户 · 主动服务</div>
+        <ul>
+          <li>每日 <b>3 次</b>定时推送 + <b>主动互动</b></li>
+          <li><b>3–5 个</b>业务模块</li>
+          <li>中等资源配额（2–3GB）</li>
+          <li>主动预警、主动提醒</li>
+          <li>旗舰模型 + 视觉能力</li>
+        </ul>
+      </div>
+
+      <div class="price">
+        <div class="lv">专业版</div>
+        <div class="amt">¥2,000 <small>/月起</small></div>
+        <div class="tagline">重度定制 · 实时工作流</div>
+        <ul>
+          <li><b>实时</b>响应 + 定制工作流</li>
+          <li><b>全模块</b> + 子 Agent（≤2）</li>
+          <li>高资源配额（4–5GB）</li>
+          <li>定制化产出（看板/报告/脚本）</li>
+          <li>旗舰模型 + 视觉能力</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="callout" style="margin-top:20px;">
+      <h3>加购项（按需叠加 · 单独报价）</h3>
+      <p>实时异动预警、主动监控、加业务模块、加数据源、每日多推与关怀提醒…… 每一项都可单独叠加，具体价格与客户商定。<b>加购不是目的，是让客户自己「想要更多」的升级抓手。</b></p>
+    </div>
+  </div>
+
+  <!-- ============ 第三部分：客户接入流程 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num" style="background:rgba(0,212,255,0.15); color:var(--cyan);">3</div>
+      <h2>客户接入 · 四步开用</h2>
+      <div class="en">Onboarding</div>
+    </div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="no">1</div>
+        <div>
+          <h3>付费定档 <span>客户</span></h3>
+          <p>客户选定基础 / 标准 / 专业任意一档，完成付费，即锁定服务。</p>
+          <span class="chip">锁定价格 · 第一单即永久锚点</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="no">2</div>
+        <div>
+          <h3>填需求清单 <span>客户</span></h3>
+          <p>客户填写《需求梳理清单》，共 8 个问题：<b style="color:var(--green)">业务场景 → 当前痛点 → 理想状态 → 数据来源 → 期望产出物 → 使用频率与人数 → 预算 → 补充</b>。</p>
+          <span class="chip">8 个问题 · 3 分钟填完</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="no">3</div>
+        <div>
+          <h3>领取专属飞书账号 <span>我方</span></h3>
+          <p>我方根据需求清单，<b style="color:var(--text)">搭建专属 Agent</b>：配好大脑（模型）、缰绳（Harness 边界）、记忆（初始资料）、沙箱（隔离环境），生成一个<b style="color:var(--green)">专属飞书智能体账号</b>发给你。</p>
+          <span class="chip">开箱即用 · 已调教好边界</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="no">4</div>
+        <div>
+          <h3>飞书上接入，直接开用 <span>客户</span></h3>
+          <p>客户在飞书里添加这个账号，<b style="color:var(--green)">直接发消息就能用</b> —— 不需要装任何软件，不需要懂任何技术。像跟同事说话一样交代事情，它就开始干活。</p>
+          <span class="chip">零安装 · 零学习成本</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="callout">
+      <h3>对客户来说，真的不复杂</h3>
+      <p>一句话总结：<b>付费 → 填张 8 问清单 → 领个飞书账号 → 开聊就用。</b> 客户全程只做两件事（付钱 + 填清单），剩下的搭建、调教、安全、运维全由我方负责。</p>
+    </div>
+  </div>
+
+  <!-- ============ 第四部分：销售要点 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num" style="background:rgba(255,77,141,0.15); color:var(--pink);">4</div>
+      <h2>销售要点 · 怎么卖</h2>
+      <div class="en">Selling</div>
+    </div>
+
+    <div class="compare">
+      <div class="cmp-card human">
+        <h4><span class="dot" style="background:var(--pink);"></span>招一个员工</h4>
+        <ul>
+          <li>月薪 5000–8000，一年 6–10 万</li>
+          <li>只干一种活，能力固定</li>
+          <li>会请假、会离职、会情绪</li>
+          <li>8 小时工作制，下班关机</li>
+          <li>培训成本高，上手慢</li>
+        </ul>
+      </div>
+      <div class="cmp-card agent">
+        <h4><span class="dot" style="background:var(--green);"></span>租一个 Agent</h4>
+        <ul>
+          <li>¥300–2000/月，一年 0.36–2.4 万</li>
+          <li>一个人顶多个岗位</li>
+          <li>24 小时在线，不请假不离职</li>
+          <li>越用越懂你，越用越值钱</li>
+          <li>即插即用，当天开工</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h3>核心卖点 · 一句话击穿</h3>
+      <p><b>「把重复、费时、易错的活交给 Agent，把人留给有温度的决策。」</b><br>
+      成本是招人的 1/10，能力是 24 小时在线，数据加密隔离，边界安全可控，越用越聪明。它不是替代你，是把你的团队从琐事里解放出来。</p>
+    </div>
+  </div>
+
+  <!-- ============ 第五部分：概念速查表 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num" style="background:rgba(255,194,71,0.15); color:var(--gold);">5</div>
+      <h2>三档对比速查</h2>
+      <div class="en">Comparison</div>
+    </div>
+    <table class="tbl">
+      <tr><th>维度</th><th>基础版 ¥300</th><th>标准版 ¥1000</th><th>专业版 ¥2000+</th></tr>
+      <tr><td>推送频次</td><td>每日 1 次</td><td>每日 3 次 + 主动互动</td><td>实时 + 定制</td></tr>
+      <tr><td>业务模块</td><td>1 个</td><td>3–5 个</td><td>全模块</td></tr>
+      <tr><td>资源配额</td><td>1GB</td><td>2–3GB</td><td>4–5GB</td></tr>
+      <tr><td>子 Agent</td><td>—</td><td>—</td><td>≤2 个并行</td></tr>
+      <tr><td>模型</td><td>旗舰 + 视觉</td><td>旗舰 + 视觉</td><td>旗舰 + 视觉</td></tr>
+      <tr><td class="sub" colspan="4">注：三档模型永不降配，区别只在「频次 × 模块 × 资源配额」。</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    AI Agent 租赁 · 使用说明书<br>
+    内部资料 · 面向销售与客户
+  </div>
+
+</div>
+</body>
+</html>
